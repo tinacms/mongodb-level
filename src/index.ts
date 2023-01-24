@@ -329,7 +329,7 @@ export class MongodbLevel<
     options: any,
     callback: (error?: Error) => void
   ): Promise<void> {
-    const bulk = this.collection!.initializeUnorderedBulkOp()
+    const bulk = this.collection!.initializeOrderedBulkOp()
 
     for (const op of batch) {
       if (op.type === 'put') {
