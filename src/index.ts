@@ -89,26 +89,26 @@ declare interface BatchDelOperation {
 
 // TODO implement Manifest to indicate supported features
 
-declare interface IteratorOptions<KDefault> {
-  limit: number
-  keyEncoding: string
-  valueEncoding: string
-  reverse: boolean
-  keys: boolean
-  values: boolean
-  collection: Collection
+declare interface FilterOptions<KDefault> {
   gt?: KDefault
   gte?: KDefault
   lt?: KDefault
   lte?: KDefault
+  limit: number
+  reverse: boolean
+  keyEncoding: string
+  valueEncoding: string
 }
 
-const buildCursor = <KDefault>(
-  collection: Collection,
-  projection: Document,
-  options: IteratorOptions<KDefault>
+declare interface IteratorOptions<KDefault> extends FilterOptions<KDefault> {
+  keys: boolean
+  values: boolean
+  collection: Collection
+}
+
+const buildFilter = <KDefault>(
+  options: FilterOptions<KDefault>
 ) => {
-  let cursor: FindCursor | undefined
   const filter: Filter<Document> = {}
   if (options.lte !== undefined) {
     filter.key = { $lte: options.lte }
@@ -120,8 +120,17 @@ const buildCursor = <KDefault>(
   } else if (options.gt !== undefined) {
     filter.key = { ...filter.key, $gt: options.gt }
   }
+  return filter
+}
+
+const buildCursor = <KDefault>(
+  collection: Collection,
+  projection: Document,
+  options: IteratorOptions<KDefault>
+) => {
+  let cursor: FindCursor | undefined
   cursor = collection
-    .find(filter, projection)
+    .find(buildFilter(options), projection)
     .sort({ key: options.reverse ? -1 : 1 })
   if (options.limit > 0) {
     cursor = cursor.limit(options.limit)
@@ -351,9 +360,9 @@ export class MongodbLevel<
     this.nextTick(callback)
   }
 
-  async _clear(options: any, callback: (error?: Error) => void): Promise<void> {
+  async _clear(options: FilterOptions<KDefault>, callback: (error?: Error) => void): Promise<void> {
     try {
-      await this.collection!.deleteMany({})
+      await this.collection!.deleteMany(buildFilter(options))
     } catch (e: any) {
       return callback(new ModuleError(e.message))
     }
