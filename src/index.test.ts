@@ -111,4 +111,18 @@ describe('mongodb-level', () => {
     expect(await result.next()).toEqual('value2')
     expect(await result.next()).toBeUndefined()
   })
+
+  it('clear only sublevel', async () => {
+    const sublevel1 = level.sublevel('sublevel1')
+    const sublevel2 = level.sublevel('sublevel2')
+    await sublevel1.put('key1', 'value1')
+    await sublevel2.put('key2', 'value2')
+    let result = level.values()
+    expect(await result.next()).toEqual('value1')
+    expect(await result.next()).toEqual('value2')
+
+    await sublevel1.clear()
+    result = level.values()
+    expect(await result.next()).toEqual('value2')
+  })
 })
