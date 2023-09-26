@@ -34,7 +34,10 @@
     "test": "jest --coverage",
     "docs": "npx typedoc",
     "lint": "eslint \"./src/**/*{.ts,.tsx}\"",
-    "types": "pnpm tsc"
+    "types": "pnpm tsc",
+    "publish": "pnpm publish -r --no-git-checks --access public",
+    "publish:beta": "pnpm publish -r --tag beta --no-git-checks --access public",
+    "publish:dev": "pnpm publish -r --tag dev --no-git-checks --access public"
   },
   "dependencies": {
     "module-error": "^1.0.2",
