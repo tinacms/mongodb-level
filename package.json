@@ -1,7 +1,7 @@
 {
   "name": "mongodb-level",
   "description": "Mongodb backed abstract-level database for Node.js",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "Apache-2.0",
@@ -37,7 +37,8 @@
     "types": "pnpm tsc",
     "publish": "pnpm publish -r --no-git-checks --access public",
     "publish:beta": "pnpm publish -r --tag beta --no-git-checks --access public",
-    "publish:dev": "pnpm publish -r --tag dev --no-git-checks --access public"
+    "publish:dev": "pnpm publish -r --tag dev --no-git-checks --access public",
+    "push-tags": "pnpm exec changeset tag && git pull && git push --follow-tags"
   },
   "dependencies": {
     "module-error": "^1.0.2",
@@ -45,6 +46,7 @@
     "abstract-level": "^1.0.3"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@shelf/jest-mongodb": "^4.1.4",
     "@tinacms/scripts": "^1.0.0",
     "@types/jest": "^29.2.4",
