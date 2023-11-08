@@ -38,7 +38,9 @@
     "publish": "pnpm publish -r --no-git-checks --access public",
     "publish:beta": "pnpm publish -r --tag beta --no-git-checks --access public",
     "publish:dev": "pnpm publish -r --tag dev --no-git-checks --access public",
-    "push-tags": "pnpm exec changeset tag && git pull && git push --follow-tags"
+    "push-tags": "pnpm exec changeset tag && git pull && git push --follow-tags",
+    "version": "pnpm exec changeset version",
+    "version:snapshot": "pnpm exec changeset version --snapshot"
   },
   "dependencies": {
     "module-error": "^1.0.2",
