@@ -1,5 +1,3 @@
-
-
 /**
  Copyright 2022 Forestry.io Inc
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +11,12 @@
  limitations under the License.
  */
 
-const mod = require('@tinacms/scripts/dist/jest-runner.js')
+/** @type {import('jest').Config} */
 module.exports = {
-  ...mod.default.config,
-  preset: "@shelf/jest-mongodb",
+  // @shelf/jest-mongodb provides testEnvironment + globalSetup that inject __MONGO_URI__
+  preset: '@shelf/jest-mongodb',
+  testPathIgnorePatterns: ['/dist/', '/node_modules/'],
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {}],
+  },
 }
